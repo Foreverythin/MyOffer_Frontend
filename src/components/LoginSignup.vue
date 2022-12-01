@@ -27,7 +27,8 @@
                     prop="password"
                     :rules="[
                       { required: true, message: 'Please input your password', trigger: 'blur' },
-                      { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                      { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                      { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                     ]"
                 >
                   <el-input type="password" v-model="employeeSigninForm.password" show-password></el-input>
@@ -75,7 +76,8 @@
                     prop="password"
                     :rules="[
                       { required: true, message: 'Please input your password', trigger: 'blur' },
-                      { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                      { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                      { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                     ]"
                 >
                   <el-input placeholder="" v-model="employeeSignupForm.password" show-password></el-input>
@@ -86,6 +88,7 @@
                     :rules="[
                       { required: true, message: 'Please confirm your password', trigger: 'blur' },
                       { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                      { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] },
                       { validator: validateEmployeeConfirmPassword, trigger: 'blur' }
                     ]"
                 >
@@ -98,7 +101,7 @@
               <span class="switch-to-login-signup" @click="switchEmployee">Already have an account? Sign in. -></span>
             </div>
           </el-tab-pane>
-
+<!-- Login in for employers -->
           <el-tab-pane label="I want to recruit" name="second">
             <div v-if="!employerSignup">
               <el-form
@@ -108,10 +111,10 @@
                   :model="employerSigninForm"
               >
                 <el-form-item
-                    label="Email"
+                    label="Company Email"
                     prop="email"
                     :rules="[
-                        { required: true, message: 'Please input your email', trigger: 'blur' },
+                        { required: true, message: 'Please input your company email', trigger: 'blur' },
                         { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
                     ]"
                 >
@@ -122,7 +125,8 @@
                     prop="password"
                     :rules="[
                         { required: true, message: 'Please input your password', trigger: 'blur' },
-                        { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                        { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                        { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                     ]"
                 >
                   <el-input placeholder="" v-model="employerSigninForm.password" show-password></el-input>
@@ -133,6 +137,7 @@
               <el-button size="large" style="width: 100%; margin-top: 10px;" @click="reset(employerSigninFormRef)">Reset</el-button>
               <span class="switch-to-login-signup" @click="switchEmployer">Does not have an account? Sign up. -></span>
             </div>
+<!-- sign up for employers -->
             <div v-else>
               <el-form
                   size="large"
@@ -141,7 +146,7 @@
                   :model="employerSignupForm"
               >
                 <el-form-item
-                    label="Email"
+                    label="Company Email"
                     prop="email"
                     :rules="[
                         { required: true, message: 'Please input your email', trigger: 'blur' },
@@ -169,7 +174,8 @@
                     prop="password"
                     :rules="[
                         { required: true, message: 'Please input your password', trigger: 'blur' },
-                        { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                        { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                        { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                     ]"
                 >
                   <el-input placeholder="" show-password v-model="employerSignupForm.password"></el-input>
@@ -180,6 +186,7 @@
                     :rules="[
                         { required: true, message: 'Please confirm your password', trigger: 'blur' },
                         { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                        { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] },
                         { validator: validateEmployerConfirmPassword, trigger: 'blur' }
                     ]"
                 >
@@ -225,7 +232,8 @@
                 prop="password"
                 :rules="[
                   { required: true, message: 'Please input your password', trigger: 'blur' },
-                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                  { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                 ]"
             >
               <el-input placeholder="" type="password" v-model="employeeSigninForm.password" show-password></el-input>
@@ -273,7 +281,8 @@
                 prop="password"
                 :rules="[
                   { required: true, message: 'Please input your password', trigger: 'blur' },
-                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                  { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                 ]"
             >
               <el-input placeholder="" show-password v-model="employeeSignupForm.password"></el-input>
@@ -284,6 +293,7 @@
                 :rules="[
                   { required: true, message: 'Please confirm your password', trigger: 'blur' },
                   { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                  { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] },
                   { validator: validateEmployeeConfirmPassword, trigger: 'blur' }
                 ]"
             >
@@ -320,7 +330,8 @@
                 prop="password"
                 :rules="[
                   { required: true, message: 'Please input your password', trigger: 'blur' },
-                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                  { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                 ]"
             >
               <el-input placeholder="" show-password v-model="employerSigninForm.password"></el-input>
@@ -368,7 +379,8 @@
                 prop="password"
                 :rules="[
                   { required: true, message: 'Please input your password', trigger: 'blur' },
-                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] }
+                  { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                  { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] }
                 ]"
             >
               <el-input placeholder="" show-password v-model="employerSignupForm.password"></el-input>
@@ -379,6 +391,7 @@
                 :rules="[
                   { required: true, message: 'Please confirm your password', trigger: 'blur' },
                   { min: 6, message: 'Password must be at least 6 characters', trigger: ['blur', 'change'] },
+                  { max: 20, message: 'Password must be at most 20 characters', trigger: ['blur', 'change'] },
                   { validator: validateEmployerConfirmPassword, trigger: 'blur' }
                 ]"
             >
