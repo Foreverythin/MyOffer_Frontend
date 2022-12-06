@@ -68,7 +68,7 @@
                     <el-input placeholder="" v-model="employeeSignupForm.captcha"></el-input>
                   </el-col>
                   <el-col :span="7">
-                    <el-button>Captcha</el-button>
+                    <el-button :disabled="employeeCaptchaButtonDisabled" @click="getCaptcha('employee')">{{ employeeCaptchaButtonContent }}</el-button>
                   </el-col>
                 </el-form-item>
                 <el-form-item
@@ -166,7 +166,7 @@
                     <el-input placeholder="" v-model="employerSignupForm.captcha"></el-input>
                   </el-col>
                   <el-col :span="7">
-                    <el-button>Captcha</el-button>
+                    <el-button :disabled="employerCaptchaButtonDisabled" @click="getCaptcha('employer')">{{ employerCaptchaButtonContent }}</el-button>
                   </el-col>
                 </el-form-item>
                 <el-form-item
@@ -273,7 +273,7 @@
                 <el-input placeholder="" v-model="employeeSignupForm.captcha"></el-input>
               </el-col>
               <el-col :span="8">
-                <el-button>Captcha</el-button>
+                <el-button :disabled="employeeCaptchaButtonDisabled" @click="getCaptcha('employee')">{{ employeeCaptchaButtonContent }}</el-button>
               </el-col>
             </el-form-item>
             <el-form-item
@@ -371,7 +371,7 @@
                 <el-input placeholder="" v-model="employerSignupForm.captcha"></el-input>
               </el-col>
               <el-col :span="8">
-                <el-button>Captcha</el-button>
+                <el-button :disabled="employerCaptchaButtonDisabled" @click="getCaptcha('employer')">{{ employerCaptchaButtonContent }}</el-button>
               </el-col>
             </el-form-item>
             <el-form-item
@@ -412,6 +412,10 @@
 // import { useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
 import type { FormInstance } from 'element-plus'
+import axios from "axios";
+import { ElMessage, ElMessageBox } from 'element-plus'
+import {get} from "http";
+import router from "@/router";
 // const router = useRouter();
 const activeName = ref('first');
 let screenWidth = ref(window.innerWidth);
@@ -443,6 +447,11 @@ const employerSignupForm = reactive({
   confirmPassword: '',
 })
 
+const employeeCaptchaButtonContent = ref('Captcha');
+const employerCaptchaButtonContent = ref('Captcha');
+const employeeCaptchaButtonDisabled = ref(false);
+const employerCaptchaButtonDisabled = ref(false);
+
 window.addEventListener('resize', () => {
   screenWidth.value = window.innerWidth;
 });
@@ -470,31 +479,79 @@ function SigninSubmit(formEl: FormInstance | undefined, userType: string) {
   if (formEl) {
     formEl.validate((valid: boolean) => {
       if (valid) {
-        if (userType === 'employee') {
-          alert('employeeSignin');
-        } else {
-          alert('employerSignin');
-        }
+        axios({
+          method: 'post',
+          url: '/api/login/' + userType,
+          data: {
+            email: userType === 'employee' ? employeeSigninForm.email : employerSigninForm.email,
+            password: userType === 'employee' ? employeeSigninForm.password : employerSigninForm.password,
+          }
+        }).then((res) => {
+          if (res.data.status === 200) {
+            ElMessage.success(res.data.msg);
+            setTimeout(() => {
+              if (userType === 'employee') {
+                router.push('/employee');
+              } else {
+                router.push('/employer');
+              }
+            }, 1000);
+          } else {
+            ElMessageBox.alert(res.data.msg, 'Tips', {
+              confirmButtonText: 'OK',
+            })
+          }
+        }).catch((err) => {
+          ElMessageBox.alert(err, 'Tips', {
+            confirmButtonText: 'OK',
+          })
+        })
       } else {
-        alert('error submit!!');
+        ElMessageBox.alert('Please fill in the table correctly!', 'Tips', {
+          confirmButtonText: 'OK',
+        })
         return false;
       }
     });
   }
-  console.log('SigninSubmit');
 }
 
 function SignupSubmit(formEl: FormInstance | undefined, userType: string) {
   if (formEl) {
     formEl.validate((valid: boolean) => {
       if (valid) {
-        if (userType === 'employee') {
-          console.log('employeeSignup');
-        } else {
-          console.log('employerSignup');
-        }
+        axios({
+          method: 'post',
+          url: '/api/register/' + userType,
+          data: {
+            email: userType === 'employee' ? employeeSignupForm.email : employerSignupForm.email,
+            password: userType === 'employee' ? employeeSignupForm.password : employerSignupForm.password,
+            confirmedPassword: userType === 'employee' ? employeeSignupForm.confirmPassword : employerSignupForm.confirmPassword,
+            captcha: userType === 'employee' ? employeeSignupForm.captcha : employerSignupForm.captcha,
+          }
+        }).then((res) => {
+          console.log(res);
+          if (res.data.status === 200) {
+            ElMessage.success(res.data.msg);
+            if (userType === 'employee') {
+              switchEmployee();
+            } else {
+              switchEmployer();
+            }
+          } else {
+            ElMessageBox.alert(res.data.msg, 'Tips', {
+              confirmButtonText: 'OK',
+            })
+          }
+        }).catch((err) => {
+          ElMessageBox.alert(err, 'Tips', {
+            confirmButtonText: 'OK',
+          })
+        })
       } else {
-        alert('error submit!!');
+        ElMessageBox.alert('Please fill in the table correctly!', 'Tips', {
+          confirmButtonText: 'OK',
+        })
         return false;
       }
     });
@@ -514,6 +571,90 @@ function switchEmployee() {
 function switchEmployer() {
   employerSignup.value = !employerSignup.value;
 }
+
+function getCaptcha(userType: string) {
+  let email;
+  if (userType === 'employee') {
+    email = employeeSignupForm.email;
+    if (IsEmail(email)) {
+      axios.get('/api/captcha', {
+        params: {
+          email: email
+        }
+      }).then((res) => {
+        ElMessage({
+          message: res.data.msg,
+          type: 'success',
+        })
+        if (res.data.status === 200) {
+          let count = 60;
+          let timer = setInterval(function () {
+            if (count > 0) {
+              count--;
+              employeeCaptchaButtonContent.value = count + 's';
+              employeeCaptchaButtonDisabled.value = true;
+            } else {
+              employeeCaptchaButtonContent.value = 'Captcha';
+              employeeCaptchaButtonDisabled.value = false;
+              clearInterval(timer);
+            }
+          }, 1000);
+        }
+      }).catch((err) => {
+        ElMessageBox.alert(err, 'Tips', {
+          confirmButtonText: 'OK',
+        })
+      });
+    } else {
+      ElMessageBox.alert('Please input a valid email address', 'Tips', {
+        confirmButtonText: 'OK',
+      })
+    }
+  } else {
+    email = employerSignupForm.email;
+    if (IsEmail(email)) {
+      console.log(email);
+      axios.get('/api/captcha', {
+        params: {
+          email: email
+        }
+      }).then((res) => {
+        ElMessage({
+          message: res.data.msg,
+          type: 'success',
+        })
+        if (res.data.status === 200) {
+          let count = 60;
+          let timer = setInterval(function () {
+            if (count > 0) {
+              count--;
+              employerCaptchaButtonContent.value = count + 's';
+              employerCaptchaButtonDisabled.value = true;
+            } else {
+              employerCaptchaButtonContent.value = 'Captcha';
+              employerCaptchaButtonDisabled.value = false;
+              clearInterval(timer);
+            }
+          }, 1000);
+        }
+      }).catch((err) => {
+        ElMessageBox.alert(err, 'Tips', {
+          confirmButtonText: 'OK',
+        })
+      });
+    } else {
+      ElMessageBox.alert('Please input a valid email address', 'Tips', {
+        confirmButtonText: 'OK',
+      })
+    }
+  }
+}
+
+function IsEmail(email: string) {
+  let reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+  return  reg.test(email);
+}
+
 </script>
 
 <style scoped>
