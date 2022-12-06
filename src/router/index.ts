@@ -6,7 +6,7 @@ import EmployerIndex from "@/components/EmployerIndex.vue";
 
 const routes = [
     {
-        path: '/',
+        path: '/login-signup',
         name: 'login-signup',
         component: LoginSignup
     },
@@ -31,5 +31,25 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes
 })
+
+// redirect to login-signup if not logged in and trying to access a restricted page
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login-signup') {
+        next();
+    } else {
+        let token = localStorage.getItem('token');
+        if (token === null || token === '') {
+            next('/login-signup');
+        } else {
+            if (to.path === '/') {
+                next('/' + token.slice(0, 8));
+            } else if (token.slice(0, 8) === to.path.slice(1, 9)) {
+                next();
+            } else {
+                next('/login-signup');
+            }
+        }
+    }
+});
 
 export default router
