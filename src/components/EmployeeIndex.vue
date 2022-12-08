@@ -169,6 +169,9 @@
              :before-close="closeProfileEditDialog">
     <el-form>
       <el-form ref="profileFormRef" :model="profileForm" label-width="85px">
+        <el-form-item label="Email">
+          <el-input placeholder="Email" disabled/>
+        </el-form-item>
         <el-form-item
             label="Name"
             prop="name"
@@ -261,16 +264,30 @@
   <el-dialog :model-value="passwordChangeDialog" title="Change your password" :before-close="closePasswordChangeDialog"
              style="width: 500px;">
     <el-form>
-      <el-form v-model="passwordChangeForm">
-        <el-form-item label="Captcha">
+      <el-form :model="passwordChangeForm" ref="passwordChangeFormRef">
+        <el-form-item
+            label="Captcha"
+            prop="captcha"
+            :rules="[
+              { required: true, message: 'Please input the captcha', trigger: 'blur' },
+              { min: 4, max: 4, message: 'Length should be 4', trigger: 'blur' }
+            ]"
+        >
           <el-col :span="15">
             <el-input type="text" placeholder="Get Captcha" v-model="passwordChangeForm.captcha"/>
           </el-col>
           <el-col :span="8">
-            <el-button style="width: 100%; margin-left: 15px;">Captcha</el-button>
+            <el-button style="width: 100%; margin-left: 15px;" @click="getPasswordChangingCaptcha">{{ passwordChangeButtonContent }}</el-button>
           </el-col>
         </el-form-item>
-        <el-form-item label="New Password">
+        <el-form-item
+            label="New Password"
+            prop="newPassword"
+            :rules="[
+              { required: true, message: 'Please input the new password', trigger: 'blur' },
+              { min: 6, max: 20, message: 'Length should be 6-20', trigger: 'blur' }
+            ]"
+        >
           <el-input show-password type="password" placeholder="New Password" v-model="passwordChangeForm.newPassword"/>
         </el-form-item>
       </el-form>
@@ -278,7 +295,7 @@
     <template #footer>
           <span class="dialog-footer">
             <el-button @click="closePasswordChangeDialog">Cancel</el-button>
-            <el-button type="primary" @click="closePasswordChangeDialog">
+            <el-button type="primary" @click="newPasswordSubmit(passwordChangeFormRef)">
               Confirm
             </el-button>
           </span>
@@ -335,12 +352,10 @@
     <template #footer>
           <span class="dialog-footer">
             <el-button @click="closeUploadAvatarDialog">Cancel</el-button>
-            <el-button type="primary" @click="closeUploadAvatarDialog">
-              Confirm
-            </el-button>
           </span>
     </template>
   </el-dialog>
+
 </template>
 
 <script setup lang="ts">
@@ -358,6 +373,7 @@ import {get} from "http";
 import router from "@/router";
 import {ElMessage} from "element-plus";
 
+const passwordChangeFormRef = ref<FormInstance>()
 const profileFormRef = ref<FormInstance>()
 
 const genderList = ref(['Male', 'Female']);
@@ -461,6 +477,57 @@ const onProgress = (currentFile: any) => {
     window.location.reload();
   }, 2000);
 };
+
+let passwordChangeButtonContent = ref('Captcha');
+
+function getPasswordChangingCaptcha() {
+  axios({
+    url: '/api/changePassword/employee',
+    method: 'get',
+  }).then((res) => {
+    ElMessage.success(res.data.msg);
+    if (res.data.status === 200) {
+      let count = 60;
+      let timer = setInterval(function () {
+        if (count > 0) {
+          count--;
+          passwordChangeButtonContent.value = count + 's';
+        } else {
+          passwordChangeButtonContent.value = 'Captcha';
+          clearInterval(timer);
+        }
+      }, 1000);
+    }
+  }).catch((err) => {
+    ElMessage.error(err);
+  })
+}
+
+const newPasswordSubmit = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      axios({
+        url: '/api/changePassword/employee',
+        method: 'post',
+        data: {
+          captcha: passwordChangeForm.value.captcha,
+          password: passwordChangeForm.value.newPassword,
+        }
+      }).then((res) => {
+        ElMessage.success(res.data.msg);
+        if (res.data.status === 200) {
+          closePasswordChangeDialog();
+        }
+      }).catch((err) => {
+        ElMessage.error(err);
+      })
+    } else {
+      ElMessage.error('Please input the correct information!')
+      return false
+    }
+  })
+}
 
 </script>
 

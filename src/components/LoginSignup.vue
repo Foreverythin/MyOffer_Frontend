@@ -209,7 +209,7 @@
     <h2 class="title-narrow">MyOffer</h2>
     <el-tabs v-model="activeName" class="demo-tabs" :stretch=true>
       <el-tab-pane label="Looking for jobs" name="first">
-<!-- sign in for employees -->
+        <!-- sign in for employees -->
         <div v-if="!employeeSignup">
           <el-form
               size="large"
@@ -244,7 +244,7 @@
           <el-button size="large" style="width: 100%; margin-top: 10px;" @click="reset(employeeSigninFormRef)">Reset</el-button>
           <span class="switch-to-login-signup" @click="switchEmployee">Does not have an account? Sign up. -></span>
         </div>
-<!-- sign up for employees -->
+        <!-- sign up for employees -->
         <div v-else>
           <el-form
               size="large"
