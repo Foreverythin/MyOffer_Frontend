@@ -102,7 +102,7 @@
               </el-row>
               <el-row style="margin-top: 20px;">
                 <el-col :span="24">
-                  <el-button style="width: 100%;" @click="profileEditDialog=true" :icon="Edit">Profile Editing
+                  <el-button style="width: 100%;" @click="profileEditDialogButton" :icon="Edit">Profile Editing
                   </el-button>
                 </el-col>
                 <el-col :span="24" style="margin-top: 10px;">
@@ -169,8 +169,15 @@
              :before-close="closeProfileEditDialog">
     <el-form>
       <el-form ref="profileFormRef" :model="profileForm" label-width="85px">
-        <el-form-item label="Email">
-          <el-input placeholder="Email" disabled/>
+        <el-form-item
+            label="Email"
+            prop="email"
+            :rules="[
+              { required: true, message: 'Please input the email', trigger: 'blur' },
+              { type: 'email', message: 'Please input correct email address', trigger: 'blur' }
+            ]"
+        >
+          <el-input v-model="profileForm.email" disabled/>
         </el-form-item>
         <el-form-item
             label="Name"
@@ -239,21 +246,21 @@
           </el-select>
         </el-form-item>
         <el-form-item
-            label="Email"
-            prop="email"
+            label="Tel"
+            prop="tel"
             :rules="[
               { required: true, message: 'Please input the email', trigger: 'blur' },
-              { type: 'email', message: 'Please input correct email address', trigger: 'blur' }
+              { type: 'number', validator: checkTel, message: 'Please input your telephone number', trigger: 'blur'}
             ]"
         >
-          <el-input v-model="profileForm.email"/>
+          <el-input v-model="profileForm.tel"/>
         </el-form-item>
       </el-form>
     </el-form>
     <template #footer>
           <span class="dialog-footer">
             <el-button @click="closeProfileEditDialog">Cancel</el-button>
-            <el-button type="primary" @click="closeProfileEditDialog">
+            <el-button type="primary" @click="editProfileSubmit(profileFormRef)">
               Confirm
             </el-button>
           </span>
@@ -413,13 +420,13 @@ const labelList = reactive([
 ])
 
 const profileForm = reactive({
-  name: '',
-  gender: '',
-  age: 0,
-  major: '',
-  degree: '',
-  tel: '',
-  email: '',
+  email: ' ',
+  name: ' ',
+  gender: ' ',
+  age: 18,
+  major: ' ',
+  degree: ' ',
+  tel: ' '
 })
 
 const labelIndexSelected: any = reactive([])
@@ -527,6 +534,66 @@ const newPasswordSubmit = (formEl: FormInstance | undefined) => {
       return false
     }
   })
+}
+
+const editProfileSubmit = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      console.log(profileForm);
+      axios({
+        url: '/api/employee/profile',
+        method: 'put',
+        data: {
+          name: profileForm.name,
+        }
+      }).then((res) => {
+        ElMessage.success(res.data.msg);
+        if (res.data.status === 200) {
+          closeProfileEditDialog();
+        }
+      }).catch((err) => {
+        ElMessage.error(err);
+      })
+    } else {
+      ElMessage.error('Please input the correct information!')
+      return false;
+    }
+  })
+}
+
+const checkTel = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('Please input the password'))
+  } else {
+    let reg = /^1[345789]\d{9}$/;
+    if (!reg.test(value)) {
+      callback(new Error('Please input your telephone number'))
+    } else {
+      callback()
+    }
+  }
+}
+
+
+function profileEditDialogButton() {
+  // get request to get the profile, not axios
+  axios({
+    url: '/api/employee/profile',
+    method: 'get'
+  }).then((res) => {
+    console.log(res.data.data);
+      profileForm.email = res.data.data.email;
+      profileForm.name = res.data.data.name;
+      profileForm.gender = res.data.data.gender;
+      profileForm.age = res.data.data.age;
+      profileForm.major = res.data.data.major;
+      profileForm.degree = res.data.data.degree;
+      profileForm.tel = res.data.data.tel;
+      console.log(profileForm);
+      profileEditDialog.value = true;
+    }
+  )
 }
 
 </script>

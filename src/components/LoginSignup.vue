@@ -465,6 +465,7 @@ function validateEmployeeConfirmPassword(rule: any, value: string, callback: any
     callback();
   }
 }
+
 function validateEmployerConfirmPassword(rule: any, value: string, callback: any) {
   if (value === '') {
     callback(new Error('Please input the password again'));
