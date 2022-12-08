@@ -6,7 +6,7 @@
           <employee-nav style="z-index: 1000;"/>
         </el-affix>
       </el-header>
-      <el-main class="main-content">
+      <el-main class="main-content" style="overflow-y: scroll">
         <el-backtop :right="50" :bottom="100"/>
         <el-row :gutter="20">
           <el-col :span="screenWidth<1000 ? 24 : 18" id="main-content-left">
@@ -76,7 +76,9 @@
                 </el-col>
                 <el-col :span="9">
                   <el-row>
-                    <el-icon size="30px" style="position: relative; bottom: 3px;"><OfficeBuilding /></el-icon>
+                    <el-icon size="30px" style="position: relative; bottom: 3px;">
+                      <OfficeBuilding/>
+                    </el-icon>
                     <span style="font-weight: bold; font-size: large; margin-left: 5px;">TM工作室</span>
                   </el-row>
                   <el-tag style="margin-right: 5px; margin-top: 10px;">5 Years</el-tag>
@@ -91,17 +93,17 @@
             <el-card style="background-color: #e2e9f1;">
               <el-row :gutter="10">
                 <el-col :span="6">
-                  <el-avatar :size="45" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
+                  <el-avatar class="my-avatar" :size="45" :src="myAvatarUrl" @click="uploadAvatarDialog=true"/>
                 </el-col>
                 <el-col :span="18">
-                  Pangyu Li
-                  <br/>
-                  20｜CS｜bachelor
+                  <el-row><strong>Pangyu Li</strong></el-row>
+                  <el-row style="margin-top: 10px;"><strong>20 | CS | Bachelor</strong></el-row>
                 </el-col>
               </el-row>
               <el-row style="margin-top: 20px;">
                 <el-col :span="24">
-                  <el-button style="width: 100%;" @click="profileEditDialog=true" :icon="Edit">Profile Editing</el-button>
+                  <el-button style="width: 100%;" @click="profileEditDialog=true" :icon="Edit">Profile Editing
+                  </el-button>
                 </el-col>
                 <el-col :span="24" style="margin-top: 10px;">
                   <el-button style="width: 100%;" @click="passwordChangeDialog=true" :icon="EditPen">Password Updating
@@ -163,7 +165,8 @@
   </div>
 
   <!--  Profile Editing Dialog  -->
-  <el-dialog :model-value="profileEditDialog" title="Edit your profile" style="width: 500px;" :before-close="closeProfileEditDialog">
+  <el-dialog :model-value="profileEditDialog" title="Edit your profile" style="width: 500px;"
+             :before-close="closeProfileEditDialog">
     <el-form>
       <el-form ref="profileFormRef" :model="profileForm" label-width="85px">
         <el-form-item
@@ -173,7 +176,7 @@
               { required: true, message: 'Please input your name', trigger: 'blur' },
             ]"
         >
-          <el-input v-model="profileForm.name" />
+          <el-input v-model="profileForm.name"/>
         </el-form-item>
         <el-row :gutter="10">
           <el-col :span="12">
@@ -203,7 +206,7 @@
                   { type: 'number', message: 'Please input number value', trigger: 'blur' }
                 ]"
             >
-              <el-input-number v-model="profileForm.age" :min="18" :max="120" @change="" />
+              <el-input-number v-model="profileForm.age" :min="18" :max="120" @change=""/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -214,7 +217,7 @@
               { required: true, message: 'Please input your major', trigger: 'blur' },
             ]"
         >
-          <el-input v-model="profileForm.major" />
+          <el-input v-model="profileForm.major"/>
         </el-form-item>
         <el-form-item
             label="Degree"
@@ -240,7 +243,7 @@
               { type: 'email', message: 'Please input correct email address', trigger: 'blur' }
             ]"
         >
-          <el-input v-model="profileForm.email" />
+          <el-input v-model="profileForm.email"/>
         </el-form-item>
       </el-form>
     </el-form>
@@ -255,19 +258,20 @@
   </el-dialog>
 
   <!--  PasswordChangeDialog  -->
-  <el-dialog :model-value="passwordChangeDialog" title="Change your password" :before-close="closePasswordChangeDialog" style="width: 500px;">
+  <el-dialog :model-value="passwordChangeDialog" title="Change your password" :before-close="closePasswordChangeDialog"
+             style="width: 500px;">
     <el-form>
       <el-form v-model="passwordChangeForm">
         <el-form-item label="Captcha">
-            <el-col :span="15">
-              <el-input type="text" placeholder="Get Captcha" v-model="passwordChangeForm.captcha" />
-            </el-col>
-            <el-col :span="8">
-              <el-button style="width: 100%; margin-left: 15px;">Captcha</el-button>
-            </el-col>
+          <el-col :span="15">
+            <el-input type="text" placeholder="Get Captcha" v-model="passwordChangeForm.captcha"/>
+          </el-col>
+          <el-col :span="8">
+            <el-button style="width: 100%; margin-left: 15px;">Captcha</el-button>
+          </el-col>
         </el-form-item>
         <el-form-item label="New Password">
-          <el-input show-password type="password" placeholder="New Password" v-model="passwordChangeForm.newPassword" />
+          <el-input show-password type="password" placeholder="New Password" v-model="passwordChangeForm.newPassword"/>
         </el-form-item>
       </el-form>
     </el-form>
@@ -280,16 +284,79 @@
           </span>
     </template>
   </el-dialog>
+
+  <!--  Upload the avatar  -->
+  <el-dialog v-model="uploadAvatarDialog" title="Upload your avatar" :before-close="closeUploadAvatarDialog">
+    <a-space direction="vertical" :style="{ width: '100%' }">
+      <a-upload
+          :action="myAvatarUrl"
+          :fileList="file ? [file] : []"
+          :show-file-list="false"
+          @change="onChange"
+          @progress="onProgress"
+      >
+        <template #upload-button>
+          <div
+              :class="`arco-upload-list-item${
+            file && file.status === 'error' ? ' arco-upload-list-item-error' : ''
+          }`"
+          >
+            <div
+                class="arco-upload-list-picture custom-upload-avatar"
+                v-if="file && file.url"
+            >
+              <img :src="file.url" />
+              <div class="arco-upload-list-picture-mask">
+                <IconEdit />
+              </div>
+              <a-progress
+                  v-if="file.status === 'uploading' && file.percent < 100"
+                  :percent="file.percent"
+                  type="circle"
+                  size="mini"
+                  :style="{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translateX(-50%) translateY(-50%)',
+                  }"
+              />
+            </div>
+            <div class="arco-upload-picture-card" v-else>
+              <div class="arco-upload-picture-card-text">
+                <IconPlus />
+                <div style="margin-top: 10px; font-weight: 600">Upload</div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </a-upload>
+    </a-space>
+    <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="closeUploadAvatarDialog">Cancel</el-button>
+            <el-button type="primary" @click="closeUploadAvatarDialog">
+              Confirm
+            </el-button>
+          </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {Search, Upload, Delete, Edit, OfficeBuilding, EditPen} from '@element-plus/icons-vue'
+import IconEdit from '@arco-design/web-vue/es/icon/icon-edit';
+import IconPlus from '@arco-design/web-vue/es/icon/icon-plus';
 import EmployeeNav from './EmployeeNav.vue'
 import type {CSSProperties} from 'vue'
 
-import type { FormInstance } from 'element-plus'
+import type {FormInstance} from 'element-plus'
+import axios from "axios";
+import {get} from "http";
+import router from "@/router";
+import {ElMessage} from "element-plus";
 
 const profileFormRef = ref<FormInstance>()
 
@@ -311,6 +378,7 @@ const passwordChangeForm = ref({
 
 let profileEditDialog = ref(false);
 let passwordChangeDialog = ref(false);
+let uploadAvatarDialog = ref(false);
 
 function closeProfileEditDialog() {
   profileEditDialog.value = false
@@ -318,6 +386,10 @@ function closeProfileEditDialog() {
 
 function closePasswordChangeDialog() {
   passwordChangeDialog.value = false
+}
+
+function closeUploadAvatarDialog() {
+  uploadAvatarDialog.value = false
 }
 
 const labelList = reactive([
@@ -368,7 +440,28 @@ const cities = [
   }
 ]
 
-const postList = ref(['1', '2', '3', '4', '5', '6'])
+const postList = ref(['1', '2', '3', '4', '5', '6']);
+
+const file = ref();
+
+let myAvatarUrl = ref('/api/avatar/employee/' + localStorage.getItem('token'));
+
+const onChange = (_: any, currentFile: any) => {
+  file.value = {
+    ...currentFile,
+    // url: URL.createObjectURL(currentFile.file),
+  };
+};
+
+const onProgress = (currentFile: any) => {
+  file.value = currentFile;
+  ElMessage.success('Upload successfully');
+  setTimeout(() => {
+    // reload the page
+    window.location.reload();
+  }, 2000);
+};
+
 </script>
 
 <style scoped>
@@ -393,7 +486,12 @@ const postList = ref(['1', '2', '3', '4', '5', '6'])
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
 .el-container.is-vertical {
   height: 100%;
+}
+
+.my-avatar:hover {
+  cursor: pointer;
 }
 </style>

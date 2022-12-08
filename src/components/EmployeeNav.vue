@@ -10,7 +10,7 @@
       <el-menu-item index="1">POST</el-menu-item>
       <div class="flex-grow" />
       <el-sub-menu index="2">
-        <template #title><el-avatar :size="30" :src="circleUrl" /></template>
+        <template #title><el-avatar :size="30" :src="myAvatarUrl" /></template>
         <el-menu-item index="2-1" @click="logout">Logout</el-menu-item>
       </el-sub-menu>
     </el-menu>
@@ -21,6 +21,8 @@ import { ref, reactive, toRefs } from 'vue'
 import axios from "axios";
 import router from "@/router";
 import {ElMessage} from "element-plus";
+
+let myAvatarUrl = ref('/api/avatar/employee/' + localStorage.getItem('token'));
 
 const state = reactive({
   circleUrl:

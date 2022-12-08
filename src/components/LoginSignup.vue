@@ -38,7 +38,6 @@
               <br>
               <el-button size="large" style="width: 100%; margin-top: 10px;" @click="reset(employeeSigninFormRef)">Reset</el-button>
               <span class="switch-to-login-signup" @click="switchEmployee">Does not have an account? Sign up. -></span>
-              <button @click="test">Test button</button>
             </div>
             <!--     sign up for employees      -->
             <div v-else>
@@ -456,15 +455,6 @@ const employerCaptchaButtonDisabled = ref(false);
 window.addEventListener('resize', () => {
   screenWidth.value = window.innerWidth;
 });
-
-function test() {
-  axios({
-    url: '/api/test/employee',
-    method: 'get'
-  }).then(res => {
-    console.log(res);
-  })
-}
 
 function validateEmployeeConfirmPassword(rule: any, value: string, callback: any) {
   if (value === '') {
