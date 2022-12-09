@@ -249,7 +249,7 @@
             label="Tel"
             prop="tel"
             :rules="[
-              { required: true, message: 'Please input the email', trigger: 'blur' },
+              { required: true, message: 'Please input your telephone number', trigger: 'blur' },
               { type: 'number', validator: checkTel, message: 'Please input your telephone number', trigger: 'blur'}
             ]"
         >
@@ -516,7 +516,7 @@ const newPasswordSubmit = (formEl: FormInstance | undefined) => {
     if (valid) {
       axios({
         url: '/api/changePassword/employee',
-        method: 'post',
+        method: 'put',
         data: {
           captcha: passwordChangeForm.value.captcha,
           password: passwordChangeForm.value.newPassword,
@@ -532,32 +532,6 @@ const newPasswordSubmit = (formEl: FormInstance | undefined) => {
     } else {
       ElMessage.error('Please input the correct information!')
       return false
-    }
-  })
-}
-
-const editProfileSubmit = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.validate((valid) => {
-    if (valid) {
-      console.log(profileForm);
-      axios({
-        url: '/api/employee/profile',
-        method: 'put',
-        data: {
-          name: profileForm.name,
-        }
-      }).then((res) => {
-        ElMessage.success(res.data.msg);
-        if (res.data.status === 200) {
-          closeProfileEditDialog();
-        }
-      }).catch((err) => {
-        ElMessage.error(err);
-      })
-    } else {
-      ElMessage.error('Please input the correct information!')
-      return false;
     }
   })
 }
@@ -594,6 +568,37 @@ function profileEditDialogButton() {
       profileEditDialog.value = true;
     }
   )
+}
+
+const editProfileSubmit = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      console.log(profileForm);
+      axios({
+        url: '/api/employee/profile',
+        method: 'put',
+        data: {
+          name: profileForm.name,
+          gender: profileForm.gender,
+          age: profileForm.age,
+          major: profileForm.major,
+          degree: profileForm.degree,
+          tel: profileForm.tel,
+        }
+      }).then((res) => {
+        ElMessage.success(res.data.msg);
+        if (res.data.status === 200) {
+          closeProfileEditDialog();
+        }
+      }).catch((err) => {
+        ElMessage.error(err);
+      })
+    } else {
+      ElMessage.error('Please input the correct information!')
+      return false;
+    }
+  })
 }
 
 </script>
