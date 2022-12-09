@@ -98,7 +98,7 @@
                 <span style="font-weight: bold;">Resume Management</span>
               </div>
               <el-divider/>
-              <div id="resumeText">{{ resumeFileName }}</div>
+              <div id="resumeText" @click="downloadResumeFile">{{ resumeFileName }}</div>
               <el-divider/>
               <el-row :gutter="10">
                 <el-col :span="12">
@@ -670,6 +670,18 @@ const deleteResumeFile = () => {
   }).then((res) => {
     ElMessage.success(res.data.msg);
     resumeFileName.value = 'No Files Uploaded';
+  }).catch((err) => {
+    ElMessage.error(err);
+  })
+}
+
+const downloadResumeFile = () => {
+  axios({
+    url: '/api/employee/downloadResume',
+    method: 'get'
+  }).then((res) => {
+    ElMessage.success(res.data.msg);
+    // window.open(res.data.data.resume);
   }).catch((err) => {
     ElMessage.error(err);
   })

@@ -56,7 +56,11 @@ router.beforeEach((to, from, next) => {
             next('/login-signup');
         } else {
             if (to.path === '/') {
-                next('/' + token.slice(0, 8));
+                if (token.slice(0, 8) == 'employee') {
+                    next('/' + token.slice(0, 8) + '/hot-posts');
+                } else {
+                    next('/' + token.slice(0, 8));
+                }
             } else if (token.slice(0, 8) === to.path.slice(1, 9)) {
                 next();
             } else {
