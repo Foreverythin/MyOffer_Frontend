@@ -96,8 +96,8 @@
                   <el-avatar class="my-avatar" :size="45" :src="myAvatarUrl" @click="uploadAvatarDialog=true"/>
                 </el-col>
                 <el-col :span="18">
-                  <el-row><strong>Pangyu Li</strong></el-row>
-                  <el-row style="margin-top: 10px;"><strong>20 | CS | Bachelor</strong></el-row>
+                  <el-row><strong>{{ nameToShow }}</strong></el-row>
+                  <el-row style="margin-top: 10px;"><strong>{{ ageToShow }} | {{ majorToShow }} | {{ degreeToShow }}</strong></el-row>
                 </el-col>
               </el-row>
               <el-row style="margin-top: 20px;">
@@ -365,8 +365,13 @@
 
 </template>
 
+<!--<script lang="ts">-->
+<!--export -->
+
+<!--</script>-->
+
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
+import {onBeforeMount, onMounted, reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {Search, Upload, Delete, Edit, OfficeBuilding, EditPen} from '@element-plus/icons-vue'
 import IconEdit from '@arco-design/web-vue/es/icon/icon-edit';
@@ -421,13 +426,18 @@ const labelList = reactive([
 
 const profileForm = reactive({
   email: ' ',
-  name: ' ',
-  gender: ' ',
+  name: '[Name]',
+  gender: '[Gender]',
   age: 18,
-  major: ' ',
-  degree: ' ',
+  major: '[Major]',
+  degree: '[Degree]',
   tel: ' '
 })
+
+let nameToShow = ref('[Name]');
+let ageToShow = ref(18);
+let majorToShow = ref('[Major]');
+let degreeToShow = ref('[Degree]');
 
 const labelIndexSelected: any = reactive([])
 for (let i = 0; i < labelList.length; i++) {
@@ -564,7 +574,6 @@ function profileEditDialogButton() {
       profileForm.major = res.data.data.major;
       profileForm.degree = res.data.data.degree;
       profileForm.tel = res.data.data.tel;
-      console.log(profileForm);
       profileEditDialog.value = true;
     }
   )
@@ -589,6 +598,10 @@ const editProfileSubmit = (formEl: FormInstance | undefined) => {
       }).then((res) => {
         ElMessage.success(res.data.msg);
         if (res.data.status === 200) {
+          nameToShow.value = profileForm.name;
+          ageToShow.value = profileForm.age;
+          majorToShow.value = profileForm.major;
+          degreeToShow.value = profileForm.degree;
           closeProfileEditDialog();
         }
       }).catch((err) => {
@@ -600,6 +613,18 @@ const editProfileSubmit = (formEl: FormInstance | undefined) => {
     }
   })
 }
+
+onMounted(() => {
+  axios({
+    url: '/api/employee/profile',
+    method: 'get'
+  }).then((res) => {
+    nameToShow.value = res.data.data.name;
+    ageToShow.value = res.data.data.age;
+    majorToShow.value = res.data.data.major;
+    degreeToShow.value = res.data.data.degree;
+  })
+})
 
 </script>
 
