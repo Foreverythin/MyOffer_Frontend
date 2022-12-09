@@ -1,13 +1,14 @@
 <template>
   <div class="common-layout">
     <el-container>
+
       <el-header>
         <el-affix>
           <employee-nav style="z-index: 1000;"/>
         </el-affix>
       </el-header>
-      <el-main class="main-content" style="overflow-y: scroll">
-        <el-backtop :right="50" :bottom="100"/>
+      <el-main class="main-content" style="overflow-y: scroll;">
+        <el-backtop right="50" bottom="50" visibility-height="100" target=".main-content"/>
         <el-row :gutter="20">
           <el-col :span="screenWidth<1000 ? 24 : 18" id="main-content-left">
             <div class="grid-content ep-bg-purple"/>
@@ -90,27 +91,28 @@
             </el-card>
           </el-col>
           <el-col :span="screenWidth<1000 ? 0 : 6" id="main-content-right">
+<!--            <el-affix :offset="81">-->
             <el-card style="background-color: #e2e9f1;">
-              <el-row :gutter="10">
-                <el-col :span="6">
-                  <el-avatar class="my-avatar" :size="45" :src="myAvatarUrl" @click="uploadAvatarDialog=true"/>
-                </el-col>
-                <el-col :span="18">
-                  <el-row><strong>{{ nameToShow }}</strong></el-row>
-                  <el-row style="margin-top: 10px;"><strong>{{ ageToShow }} | {{ majorToShow }} | {{ degreeToShow }}</strong></el-row>
-                </el-col>
-              </el-row>
-              <el-row style="margin-top: 20px;">
-                <el-col :span="24">
-                  <el-button style="width: 100%;" @click="profileEditDialogButton" :icon="Edit">Profile Editing
-                  </el-button>
-                </el-col>
-                <el-col :span="24" style="margin-top: 10px;">
-                  <el-button style="width: 100%;" @click="passwordChangeDialog=true" :icon="EditPen">Password Updating
-                  </el-button>
-                </el-col>
-              </el-row>
-            </el-card>
+            <el-row :gutter="10">
+              <el-col :span="6">
+                <el-avatar class="my-avatar" :size="45" :src="myAvatarUrl" @click="uploadAvatarDialog=true"/>
+              </el-col>
+              <el-col :span="18">
+                <el-row><strong>{{ nameToShow }}</strong></el-row>
+                <el-row style="margin-top: 10px;"><strong>{{ ageToShow }} | {{ majorToShow }} | {{ degreeToShow }}</strong></el-row>
+              </el-col>
+            </el-row>
+            <el-row style="margin-top: 20px;">
+              <el-col :span="24">
+                <el-button style="width: 100%;" @click="profileEditDialogButton" :icon="Edit">Profile Editing
+                </el-button>
+              </el-col>
+              <el-col :span="24" style="margin-top: 10px;">
+                <el-button style="width: 100%;" @click="passwordChangeDialog=true" :icon="EditPen">Password Updating
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-card>
 
             <el-card style="margin-top: 15px; background-color: #e2e9f1;">
               <div class="card-header">
@@ -157,6 +159,7 @@
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
               hhh
             </el-card>
+<!--            </el-affix>-->
 
           </el-col>
         </el-row>
@@ -473,7 +476,7 @@ const cities = [
   }
 ]
 
-const postList = ref(['1', '2', '3', '4', '5', '6']);
+const postList = ref(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
 
 const file = ref();
 
