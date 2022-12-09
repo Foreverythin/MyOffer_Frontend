@@ -117,7 +117,7 @@
                   </el-upload>
                 </el-col>
                 <el-col :span="12">
-                  <el-button style="width: 100%;" :icon="Delete">Delete</el-button>
+                  <el-button style="width: 100%;" :icon="Delete" @click="deleteResumeFile">Delete</el-button>
                 </el-col>
               </el-row>
             </el-card>
@@ -662,6 +662,18 @@ const handleResumeSuccess = ((res: any) => {
 const handleResumeError = ((err: any) => {
   ElMessage.error('Upload failed');
 })
+
+const deleteResumeFile = () => {
+  axios({
+    url: '/api/employee/resume',
+    method: 'delete'
+  }).then((res) => {
+    ElMessage.success(res.data.msg);
+    resumeFileName.value = 'No Files Uploaded';
+  }).catch((err) => {
+    ElMessage.error(err);
+  })
+}
 
 </script>
 
