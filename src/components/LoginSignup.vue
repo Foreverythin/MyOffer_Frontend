@@ -493,7 +493,7 @@ function SigninSubmit(formEl: FormInstance | undefined, userType: string) {
             localStorage.setItem('token', res.data.token);
             setTimeout(() => {
               if (userType === 'employee') {
-                router.push('/employee');
+                router.push('/employee/hot-posts');
               } else {
                 router.push('/employer');
               }
