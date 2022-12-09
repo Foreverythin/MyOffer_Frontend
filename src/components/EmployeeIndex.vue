@@ -8,7 +8,7 @@
         </el-affix>
       </el-header>
       <el-main class="main-content" style="overflow-y: scroll;">
-        <el-backtop right="50" bottom="50" visibility-height="100" target=".main-content"/>
+        <el-backtop :right="50" :bottom="50" :visibility-height="100" target=".main-content"/>
         <el-row :gutter="20">
           <el-col :span="screenWidth<1000 ? 24 : 18" id="main-content-left">
             <div class="grid-content ep-bg-purple"/>
@@ -98,11 +98,23 @@
                 <span style="font-weight: bold;">Resume Management</span>
               </div>
               <el-divider/>
-              <div id="resumeText">No files uploaded.</div>
+              <div id="resumeText">{{ resumeFileName }}</div>
               <el-divider/>
               <el-row :gutter="10">
                 <el-col :span="12">
-                  <el-button style="width: 100%;" :icon="Upload">Upload</el-button>
+                  <el-upload
+                      ref="resumeRef"
+                      action="/api/employee/resume"
+                      :limit="1"
+                      :on-exceed="handleResumeExceed"
+                      style="width: 100%"
+                      :headers="tokenHeaderDict"
+                      :on-success="handleResumeSuccess"
+                      :on-error="handleResumeError"
+                      accept=".pdf"
+                  >
+                    <el-button id="upload-button" style="width: 100%;" :icon="Upload">Upload</el-button>
+                  </el-upload>
                 </el-col>
                 <el-col :span="12">
                   <el-button style="width: 100%;" :icon="Delete">Delete</el-button>
@@ -299,6 +311,7 @@
           :show-file-list="false"
           @change="onChange"
           @progress="onProgress"
+          accept="image/*"
       >
         <template #upload-button>
           <div
@@ -354,11 +367,13 @@
 <script setup lang="ts">
 import {onBeforeMount, onMounted, reactive, ref} from 'vue'
 import {useRouter} from 'vue-router'
-import {Search, Upload, Delete, Edit, OfficeBuilding, EditPen} from '@element-plus/icons-vue'
+import {Search, Upload, Delete, Edit, EditPen} from '@element-plus/icons-vue'
 import IconEdit from '@arco-design/web-vue/es/icon/icon-edit';
 import IconPlus from '@arco-design/web-vue/es/icon/icon-plus';
 import EmployeeNav from './EmployeeNav.vue'
 import type {CSSProperties} from 'vue'
+import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
+import { genFileId } from 'element-plus'
 
 import type {FormInstance} from 'element-plus'
 import axios from "axios";
@@ -375,6 +390,8 @@ const degreeList = ref(['Bachelor', 'Master', 'PhD']);
 window.addEventListener('resize', () => {
   screenWidth.value = window.innerWidth;
 });
+
+const tokenHeaderDict = {'Authorization': localStorage.getItem('token')}
 
 let screenWidth = ref(window.innerWidth);
 
@@ -476,6 +493,8 @@ const onProgress = (currentFile: any) => {
 
 let passwordChangeButtonContent = ref('Captcha');
 
+let resumeFileName = ref('No Files Uploaded');
+
 function getPasswordChangingCaptcha() {
   axios({
     url: '/api/changePassword/employee',
@@ -538,7 +557,6 @@ const checkTel = (rule: any, value: any, callback: any) => {
   }
 }
 
-
 function profileEditDialogButton() {
   // get request to get the profile, not axios
   axios({
@@ -594,6 +612,7 @@ const editProfileSubmit = (formEl: FormInstance | undefined) => {
 }
 
 onMounted(() => {
+  document.getElementById('upload-button')!.parentElement!.style.width = '100%';
   axios({
     url: '/api/employee/profile',
     method: 'get'
@@ -603,6 +622,45 @@ onMounted(() => {
     majorToShow.value = res.data.data.major;
     degreeToShow.value = res.data.data.degree;
   })
+
+  // get resume name
+  axios({
+    url: '/api/employee/resume',
+    method: 'get'
+  }).then((res) => {
+    if (res.data.data) {
+      resumeFileName.value = res.data.data.resume;
+    }
+  }).catch((err) => {
+    ElMessage.error(err);
+  })
+})
+
+const resumeRef = ref<UploadInstance>();
+
+const handleResumeExceed: UploadProps['onExceed'] = (files) => {
+  resumeRef.value!.clearFiles();
+  const file = files[0] as UploadRawFile;
+  file.uid = genFileId();
+  resumeRef.value!.handleStart(file);
+}
+
+const handleResumeSuccess = ((res: any) => {
+  ElMessage.success('Upload successfully');
+  axios({
+    url: '/api/employee/resume',
+    method: 'get'
+  }).then((res) => {
+    console.log(res.data.data.resume);
+    resumeRef.value!.clearFiles();
+    resumeFileName.value = res.data.data.resume;
+  }).catch((err) => {
+    ElMessage.error(err);
+  })
+})
+
+const handleResumeError = ((err: any) => {
+  ElMessage.error('Upload failed');
 })
 
 </script>
@@ -637,4 +695,5 @@ onMounted(() => {
 .my-avatar:hover {
   cursor: pointer;
 }
+
 </style>

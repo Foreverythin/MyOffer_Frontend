@@ -27,6 +27,7 @@
 
 <script lang="ts" setup>
 
+import { OfficeBuilding } from '@element-plus/icons-vue'
 import {ref} from "vue";
 
 const postList = ref(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
