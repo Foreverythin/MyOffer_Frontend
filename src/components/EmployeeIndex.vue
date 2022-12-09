@@ -676,15 +676,22 @@ const deleteResumeFile = () => {
 }
 
 const downloadResumeFile = () => {
-  axios({
-    url: '/api/employee/downloadResume',
-    method: 'get'
-  }).then((res) => {
-    ElMessage.success(res.data.msg);
-    // window.open(res.data.data.resume);
-  }).catch((err) => {
-    ElMessage.error(err);
-  })
+  let xhr = new XMLHttpRequest();
+  xhr.open('get', '/api/employee/downloadResume', true);
+  xhr.responseType = "blob";
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.setRequestHeader('Authorization', localStorage.getItem('token')!);
+  xhr.onload = function () {
+    const url = window.URL.createObjectURL(this.response);
+    const link = document.createElement("a");
+    link.style.display = "none";
+    link.href = url;
+    link.setAttribute("download", resumeFileName.value);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  xhr.send();
 }
 
 </script>
