@@ -5,6 +5,7 @@ import EmployeeIndex from "@/components/EmployeeIndex.vue";
 import EmployerIndex from "@/components/EmployerIndex.vue";
 import HotPosts from "@/components/HotPosts.vue";
 import LatestPosts from "@/components/LatestPosts.vue";
+import PostDetail from "@/components/PostDetail.vue";
 
 const routes = [
     {
@@ -38,6 +39,11 @@ const routes = [
         path: '/employer',
         name: 'EmployerIndex',
         component: EmployerIndex
+    },
+    {
+        path: '/post',
+        name: 'PostDetail',
+        component: PostDetail
     }
 ]
 
@@ -61,10 +67,8 @@ router.beforeEach((to, from, next) => {
                 } else {
                     next('/' + token.slice(0, 8));
                 }
-            } else if (token.slice(0, 8) === to.path.slice(1, 9)) {
-                next();
             } else {
-                next('/login-signup');
+                next();
             }
         }
     }

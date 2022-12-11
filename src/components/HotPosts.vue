@@ -1,5 +1,5 @@
 <template>
-  <el-card style="margin-top: 10px;" v-for="item in postList">
+  <el-card style="margin-top: 10px;" v-for="item in postList" class="postCard" data-postID="2" @click="toPostDetail(2)">
     <el-row :gutter="10">
       <el-col :span="15">
         <span style="font-weight: bold; font-size: large;">C++开发工程师</span>
@@ -8,10 +8,11 @@
         <br/>
         <el-tag style="margin-right: 5px; margin-top: 10px;">12-14k</el-tag>
         <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">Bachelor</el-tag>
+        <el-tag type="warning" style="margin-right: 5px; margin-top: 10px;">C++</el-tag>
       </el-col>
       <el-col :span="9">
         <el-row>
-          <el-icon size="30px" style="position: relative; bottom: 3px;">
+          <el-icon size="30px" style="position: relative; bottom: 5px;">
             <OfficeBuilding/>
           </el-icon>
           <span style="font-weight: bold; font-size: large; margin-left: 5px;">TM工作室</span>
@@ -29,12 +30,19 @@
 
 import { OfficeBuilding } from '@element-plus/icons-vue'
 import {ref} from "vue";
+import router from "@/router";
 
 const postList = ref(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']);
 
+const toPostDetail = (postID: number) => {
+  router.push('/post');
+}
 
 </script>
 
 <style scoped>
+.postCard:hover {
+  cursor: pointer;
+}
 
 </style>
