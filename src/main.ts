@@ -1,6 +1,7 @@
 import {createApp} from 'vue';
 import App from './App.vue';
 import ArcoVue from '@arco-design/web-vue';
+import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import router from "./router/index";
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
@@ -21,4 +22,4 @@ axios.interceptors.request.use(
 );
 
 
-createApp(App).use(router).use(ElementPlus).use(ArcoVue).mount('#app')
+createApp(App).use(router).use(ElementPlus).use(ArcoVue).use(ArcoVueIcon).mount('#app')

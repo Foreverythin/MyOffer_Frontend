@@ -107,6 +107,14 @@
                 <el-descriptions-item>
                   <template #label>
                     <div class="cell-item">
+                      Staff
+                    </div>
+                  </template>
+                  300
+                </el-descriptions-item>
+                <el-descriptions-item>
+                  <template #label>
+                    <div class="cell-item">
                       Email
                     </div>
                   </template>
