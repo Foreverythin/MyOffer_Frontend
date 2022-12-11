@@ -2,22 +2,22 @@
   <a-layout class="layout-demo">
     <a-layout-sider collapsible breakpoint="xl">
       <a-menu
-          :default-selected-keys="['0_1']"
+          :default-selected-keys="[activeKey]"
           :style="{ width: '100%' }"
       >
-        <a-menu-item key="0_1">
+        <a-menu-item @click="toBasicInfo" key="basic-info">
           <icon-user />
           Basic Info
         </a-menu-item>
-        <a-menu-item key="0_2">
-          <icon-folder-add />
+        <a-menu-item @click="toPostList" key="post-list">
+          <icon-folder />
           Post List
         </a-menu-item>
-        <a-menu-item key="0_3">
+        <a-menu-item @click="toAddPost" key="add-post">
           <icon-folder-add />
           Add Post
         </a-menu-item>
-        <a-menu-item>
+        <a-menu-item @click="toPassword" key="password">
           <icon-pen />
           Change Password
         </a-menu-item>
@@ -38,18 +38,19 @@
       </a-layout-header >
       <a-layout style="padding: 0 24px;">
         <a-breadcrumb :style="{ margin: '16px 0' }"></a-breadcrumb>
-        <a-layout-content>Content</a-layout-content>
-        <a-layout-footer>Footer</a-layout-footer>
+        <a-layout-content>
+          <router-view></router-view>
+        </a-layout-content>
+        <a-layout-footer></a-layout-footer>
       </a-layout>
     </a-layout>
   </a-layout>
 </template>
 <script lang="ts" setup>
-import { defineComponent } from 'vue';
+import {defineComponent, onMounted, ref} from 'vue';
 import { Message} from '@arco-design/web-vue';
 import { OfficeBuilding } from '@element-plus/icons-vue'
 import {useRouter} from 'vue-router'
-import router from "@/router";
 import {ElMessage} from "element-plus";
 import {
   IconCaretRight,
@@ -58,19 +59,47 @@ import {
   IconCalendar,
 } from '@arco-design/web-vue/es/icon';
 
-// function onClickMenuItem(key: any) {
-//     Message.info({ content: `You select ${key}`, showIcon: true });
-// }
+import axios from "axios";
+
+let router = useRouter();
+
+let activeKey = ref('basic-info');
+
+activeKey.value = router.currentRoute.value.path.split('/')[2];
+
+function toBasicInfo() {
+  router.push('/employer/basic-info');
+}
+
+function toPostList() {
+  router.push('/employer/post-list');
+}
+
+function toAddPost() {
+  router.push('/employer/add-post');
+}
 
 function logout() {
   let token = localStorage.getItem('token');
   console.log(token);
-  localStorage.removeItem('token');
-  ElMessage({
-    message: 'Logout successfully',
-    type: 'success',
+  axios({
+    url: '/api/logout/employer',
+    method: 'get'
+  }).then(res => {
+    console.log(res);
+    localStorage.removeItem('token');
+    ElMessage({
+      message: res.data.msg,
+      type: 'success',
+    })
+    router.push('/login-signup');
+  }).catch(err => {
+    ElMessage.error(err);
   })
-  router.push('/login-signup');
+}
+
+function toPassword() {
+  router.push('/employer/password');
 }
 </script>
 <style scoped>
@@ -110,12 +139,13 @@ function logout() {
 }
 .layout-demo :deep(.arco-layout-footer),
 .layout-demo :deep(.arco-layout-content)  {
+  padding: 10px 24px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  color: var(--color-white);
+  /*justify-content: center;*/
+  /*color: var(--color-white);*/
   font-size: 16px;
   font-stretch: condensed;
-  text-align: center;
+  /*text-align: center;*/
 }
 </style>

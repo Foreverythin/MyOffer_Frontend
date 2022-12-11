@@ -495,7 +495,7 @@ function SigninSubmit(formEl: FormInstance | undefined, userType: string) {
               if (userType === 'employee') {
                 router.push('/employee/hot-posts');
               } else {
-                router.push('/employer');
+                router.push('/employer/basic-info');
               }
             }, 1000);
           } else {
