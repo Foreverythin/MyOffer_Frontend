@@ -78,6 +78,16 @@
       <el-form-item label="Email">
         <el-input v-model="companyInfo.email" disabled/>
       </el-form-item>
+      <br/>
+      <el-form-item
+          label="Introduction"
+          prop="introduction"
+          :rules="[
+            { required: true, message: 'Please input staff number', trigger: 'blur' }
+          ]"
+      >
+        <el-input type="textarea" v-model="companyInfo.introduction" rows="20" />
+      </el-form-item>
     </el-form>
   </a-modal>
 </template>
@@ -96,7 +106,8 @@ const companyInfo = ref({
   dateOfEstablishment: '',
   location: '',
   staff: '',
-  email: ''
+  email: '',
+  introduction: ''
 })
 
 const data = ref([{
@@ -120,6 +131,15 @@ const data = ref([{
 }, {
   label: 'Email',
   value: ''
+}, {
+  label: '',
+  value: ''
+}, {
+  label: '',
+  value: ''
+}, {
+  label: 'Introduction',
+  value: ''
 }]);
 
 const visible = ref(false);
@@ -136,15 +156,14 @@ axios({
   data.value[4].value = res.data.data.location;
   data.value[5].value = res.data.data.staff;
   data.value[6].value = res.data.data.email;
+  data.value[9].value = res.data.data.introduction;
 }).catch(err => {
   ElMessage.error(err.message)
 })
 
-
 const handleClick = () => {
   axios.get('/api/employer/basic-info').then(res => {
     companyInfo.value = res.data.data
-    console.log(companyInfo.value.dateOfEstablishment)
     visible.value = true
   })
 };
@@ -166,6 +185,7 @@ const handleOk = (formEl: FormInstance | undefined) => {
           data.value[4].value = res.data.data.location;
           data.value[5].value = res.data.data.staff;
           data.value[6].value = res.data.data.email;
+          data.value[9].value = res.data.data.introduction;
           ElMessage.success(res.data.msg);
           visible.value = false;
         } else {
