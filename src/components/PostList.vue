@@ -25,10 +25,14 @@
               <a-tag>{{ key.label }}</a-tag>
             </a-descriptions-item>
             <a-descriptions-item label="Tasks" :span="24">
-              <a-tag>{{ key.tasks }}</a-tag>
+              <a-card style="width: 700px;">
+                {{ key.tasks }}
+              </a-card>
             </a-descriptions-item>
-            <a-descriptions-item label="Requirements" :span="24">
-              <a-tag>{{ key.requirements }}</a-tag>
+            <a-descriptions-item label="Requirements" :span="24" style="border-radius: 6px;">
+              <a-card style="width: 700px;">
+                {{ key.requirements }}
+              </a-card>
             </a-descriptions-item>
             <a-descriptions-item label="Status">
               <a-tag>{{ key.inRecruitment }}</a-tag>
