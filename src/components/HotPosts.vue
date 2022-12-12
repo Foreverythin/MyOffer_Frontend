@@ -4,9 +4,7 @@
       <el-col :span="15">
         <span style="font-weight: bold; font-size: large;">C++开发工程师</span>
         <br/>
-        <span style="font-size: 13px;">This is a description of C++ 开发工程师.</span>
-        <br/>
-        <el-tag style="margin-right: 5px; margin-top: 10px;">12-14k</el-tag>
+        <el-tag style="margin-right: 5px; margin-top: 20px;">12-14k</el-tag>
         <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">Bachelor</el-tag>
         <el-tag type="warning" style="margin-right: 5px; margin-top: 10px;">C++</el-tag>
       </el-col>

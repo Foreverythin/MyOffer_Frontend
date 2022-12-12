@@ -13,10 +13,8 @@
           <el-row :gutter="10">
             <el-col :span="15">
               <span style="font-weight: bold; font-size: x-large;">C++开发工程师</span>
-              <!--              <br/>-->
-              <div style="font-size: 15px; margin-top: 10px;">This is a description of C++ 开发工程师.</div>
               <br/>
-              <el-tag style="margin-right: 5px;">12-14k</el-tag>
+              <el-tag style="margin-right: 5px; margin-top: 15px;">12-14k</el-tag>
               <el-tag type="success" style="margin-right: 5px;">Bachelor</el-tag>
               <el-tag type="warning" style="margin-right: 5px;">C++</el-tag>
               <br/>
@@ -29,7 +27,6 @@
                 </el-icon>
                 <span style="font-weight: bold; font-size: large; margin-left: 5px;">TM工作室</span>
               </el-row>
-              <div style="font-size: 15px; margin-top: 10px;">This is a company.</div>
               <el-tag style="margin-right: 5px; margin-top: 10px;">5 Years</el-tag>
               <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">500 staff</el-tag>
               <el-tag type="warning" style="margin-right: 5px; margin-top: 10px;">Game Development</el-tag>
@@ -145,7 +142,6 @@
                      class="similarPosts">
               <el-row>
                 <div style="font-weight: bold; font-size: large;">Java开发工程师</div>
-                <div style="font-size: 12px; margin-top: 10px;">This is a description of C++ 开发工程师.</div>
               </el-row>
 
               <el-row style="margin-top: 5px;">

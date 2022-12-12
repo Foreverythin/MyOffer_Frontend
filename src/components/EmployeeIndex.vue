@@ -69,7 +69,6 @@
 
           </el-col>
 
-
           <el-col :span="screenWidth<1000 ? 0 : 6" id="main-content-right">
             <el-card style="background-color: #e2e9f1;">
             <el-row :gutter="10">
