@@ -1,6 +1,6 @@
 <template>
   <h3>Company Info</h3>
-  <a-descriptions :data="data" title="" bordered size="large"/>
+  <a-descriptions :data="data" bordered size="large"/>
   <a-button type="primary" style="width: 100px; margin-top: 15px;" size="large" @click="handleClick">Edit</a-button>
 
 <!-- dialog -->
@@ -83,10 +83,10 @@
           label="Introduction"
           prop="introduction"
           :rules="[
-            { required: true, message: 'Please input staff number', trigger: 'blur' }
+            { required: true, message: 'Please input the introduction', trigger: 'blur' }
           ]"
       >
-        <el-input type="textarea" v-model="companyInfo.introduction" rows="20" />
+        <el-input type="textarea" v-model="companyInfo.introduction" rows="8" />
       </el-form-item>
     </el-form>
   </a-modal>

@@ -10,7 +10,7 @@
     <a-collapse-item :header="key.title" :key="index" v-for="(key, index) in postList">
       <template #extra>
         <a-button class="extra-button" type="primary" size="mini" @click.stop="editPost(index)" style="width: 60px;">Edit</a-button>
-        <a-button class="extra-button" size="mini" @click.stop="deletePost(index)">Delete</a-button>
+        <a-button class="extra-button" size="mini" @click.stop="deletePost(key.ID)">Delete</a-button>
       </template>
       <div>
         <a-space direction="vertical" size="large" fill>
@@ -47,19 +47,43 @@
 <script lang="ts" setup>
 import { ref, reactive, toRefs } from 'vue'
 import axios from "axios";
+import {ElMessage} from "element-plus";
 
 let postList = ref([]);
 
-axios({
-  url: '/api/employer/posts',
-  method: 'get'
-}).then(res => {
-  console.log(res);
-  postList.value = res.data.data;
-  console.log(postList.value);
-}).catch(err => {
-  console.log(err);
-})
+function getPostList() {
+  axios({
+    url: '/api/employer/posts',
+    method: 'get'
+  }).then(res => {
+    console.log(res);
+    postList.value = res.data.data;
+    console.log(postList.value);
+  }).catch(err => {
+    console.log(err);
+  })
+}
+
+getPostList();
+
+const deletePost = (id: number) => {
+  console.log(id);
+  axios({
+    url: '/api/employer/posts',
+    method: 'delete',
+    data: {
+      pid: id
+    }
+  }).then(res => {
+    ElMessage({
+      message: res.data.msg,
+      type: 'success',
+    })
+    getPostList();
+  }).catch(err => {
+    ElMessage.error(err);
+  })
+}
 
 </script>
 
