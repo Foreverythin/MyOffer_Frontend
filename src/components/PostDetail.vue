@@ -91,7 +91,15 @@
                 <el-descriptions-item>
                   <template #label>
                     <div class="cell-item">
-                      Time of Establishment
+                      Research Direction
+                    </div>
+                  </template>
+                  AI
+                </el-descriptions-item>
+                <el-descriptions-item>
+                  <template #label>
+                    <div class="cell-item">
+                      Date of Establishment
                     </div>
                   </template>
                   2018-10-03
@@ -99,7 +107,7 @@
                 <el-descriptions-item>
                   <template #label>
                     <div class="cell-item">
-                      Place
+                      Location
                     </div>
                   </template>
                   Chengdu
@@ -122,7 +130,7 @@
                 </el-descriptions-item>
               </el-descriptions>
               <h3>Introduction</h3>
-              <div style="font-size: large">
+              <div style="font-size: large; line-height: 25px;">
                 南京红松信息成立于2014年4月，注册资金2000万，坐落于雨花台区宁双路18号沁恒科技园D栋一楼，公司以“用数据驱动行业进步”为使命，致力于大数据、人工智能、物联网技术研究和应用。自成立以来公司研发的“翌学”AI自动批阅系统、松果大数据分析系统、“e企学”在线学习平台，等产品在国内有着广泛的应用。作为一家创新型高新技术企业，公司研发技术人员占比超过70%，凭着多个领域的深入研究和积累，已累积申请发明专利20项，软件著作权28项。公司充分利用高校丰富的智力资源，和南京大学共建“研究生工作站”，和厦门集美大学、南京邮电大学等开展了深入的产学研合作。同时公司也是Prometric/VUE在国内的授权考试中心。
 
                 红松，成就卓越自我！

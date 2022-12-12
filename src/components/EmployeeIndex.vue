@@ -628,6 +628,9 @@ onMounted(() => {
     url: '/api/employee/resume',
     method: 'get'
   }).then((res) => {
+    if (res.data.status === 410) {
+      ElMessage.error(res.data.msg);
+    }
     if (res.data.data) {
       resumeFileName.value = res.data.data.resume;
     }

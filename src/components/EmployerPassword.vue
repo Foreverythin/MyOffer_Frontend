@@ -30,7 +30,7 @@
           >
             <el-input show-password type="password" placeholder="New Password" v-model="passwordChangeForm.newPassword" size="large"/>
           </el-form-item>
-          <el-button style="float: right; width: 100%; margin-top: 5px;" size="large" type="primary" @click="newPasswordSubmit(passwordChangeFormRef)">Submit</el-button>
+          <el-button style="float: right; width: 100%; margin-top: 5px; background-color: rgb(45, 92, 246); color: white" size="large" @click="newPasswordSubmit(passwordChangeFormRef)">Submit</el-button>
           <br/>
           <el-button size="large" style="width: 100%; margin-top: 15px;" @click="reset(passwordChangeFormRef)">Reset</el-button>
         </el-form>
