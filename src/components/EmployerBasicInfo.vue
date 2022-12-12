@@ -4,7 +4,7 @@
   <a-button type="primary" style="width: 100px; margin-top: 15px;" size="large" @click="handleClick">Edit</a-button>
 
 <!-- dialog -->
-  <a-modal v-model:visible="visible" @ok="handleOk(companyInfoRef)" @cancel="handleCancel">
+  <a-modal v-model:visible="visible" @ok="handleOk(companyInfoRef)" @cancel="handleCancel" ok-text="Submit" cancel-text="Cancel">
     <template #title>
       Company Info
     </template>
