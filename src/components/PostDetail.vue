@@ -18,7 +18,7 @@
               <el-tag type="success" style="margin-right: 5px;">{{ postInfo.degree }}</el-tag>
               <el-tag type="warning" style="margin-right: 5px;">{{ postInfo.label }}</el-tag>
               <br/>
-              <el-button type="success" style="margin-top: 10px;">Deliver My Resume</el-button>
+              <el-button type="success" style="margin-top: 10px;" @click="deliverResume(postID)">Deliver My Resume</el-button>
             </el-col>
             <el-col :span="9">
               <el-row>
@@ -235,6 +235,24 @@ const toSimilarPost = (postID: number) => {
   setInterval(() => {
     window.location.reload();
   }, 100)
+}
+
+const deliverResume = (postID: number) => {
+  axios({
+    url: '/api/employee/send-resume',
+    method: 'post',
+    data: {
+      postID: postID
+    }
+  }).then(res => {
+    if (res.data.status == 200) {
+      ElMessage.success(res.data.msg);
+    } else {
+      ElMessage.error(res.data.msg);
+    }
+  }).catch(err => {
+    ElMessage.error(err);
+  })
 }
 
 </script>
