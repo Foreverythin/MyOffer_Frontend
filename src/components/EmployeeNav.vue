@@ -7,7 +7,7 @@
         @select="handleSelect"
     >
       <img src="@/assets/photo/logo.png" style="height: 40px; vertical-align: center;" alt="logo">
-      <el-menu-item index="1">POST</el-menu-item>
+      <el-menu-item index="1" @click="toHome">POST</el-menu-item>
       <div class="flex-grow" />
       <el-sub-menu index="2">
         <template #title><el-avatar :size="30" :src="myAvatarUrl" /></template>
@@ -53,6 +53,19 @@ function logout() {
     router.push('/login-signup');
   }).catch(err => {
     ElMessage.error(err);
+  })
+}
+
+const toHome = () => {
+  router.push({
+    path: '/employee/searched-posts',
+    query: {
+      title: '',
+      city: '',
+      salary: 2000,
+      labels: [],
+      viewMethod: 'Hot Posts'
+    }
   })
 }
 </script>

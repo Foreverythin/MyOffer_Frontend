@@ -128,20 +128,29 @@
               </div>
             </el-card>
           </el-col>
+          <!--     similar posts     -->
           <el-col :span="screenWidth<1000 ? 0 : 6" id="main-content-right">
             <el-card style="background-color: #e2e9f1;">
               <div style="font-size: 18px; font-weight: bold;">Similar Posts</div>
             </el-card>
+            <el-card v-if="similarPosts.length === 0" style="margin-top: 10px;background-color: #e2e9f1;">
+              <a-empty>
+                <template #image>
+                  <icon-empty />
+                </template>
+                No results!
+              </a-empty>
+            </el-card>
             <el-card v-for="item in similarPosts" style="margin-top:10px; background-color: #e2e9f1"
-                     class="similarPosts">
+                     class="similarPosts" @click="toSimilarPost(item.post_id)">
               <el-row>
-                <div style="font-weight: bold; font-size: large;">Java开发工程师</div>
+                <div style="font-weight: bold; font-size: large;">{{ item.title }}</div>
               </el-row>
 
               <el-row style="margin-top: 5px;">
-                <el-tag style="margin-right: 5px;">12-14k</el-tag>
-                <el-tag type="success" style="margin-right: 5px;">Bachelor</el-tag>
-                <el-tag type="warning" style="margin-right: 5px;">C++</el-tag>
+                <el-tag style="margin-right: 5px;">¥{{ item.salary }}</el-tag>
+                <el-tag type="success" style="margin-right: 5px;">{{ item.degree }}</el-tag>
+                <el-tag type="warning" style="margin-right: 5px;">{{ item.label }}</el-tag>
               </el-row>
             </el-card>
           </el-col>
@@ -198,12 +207,35 @@ axios({
 }).then(res => {
   postInfo.value = res.data.data.postInfo;
   companyInfo.value = res.data.data.companyInfo;
-  console.log(2)
-  console.log(postInfo.value);
-  console.log(companyInfo.value);
 }).catch(err => {
   ElMessage.error(err);
 })
+
+axios({
+  url: '/api/employee/similar-posts',
+  method: 'get',
+  params: {
+    postID: postID.value
+  }
+}).then(res => {
+  similarPosts.value = res.data.data.posts;
+  console.log(similarPosts.value);
+}).catch(err => {
+  ElMessage.error(err);
+})
+
+const toSimilarPost = (postID: number) => {
+  console.log(postID);
+  router.push({
+    path: '/post',
+    query: {
+      postID: postID
+    }
+  })
+  setInterval(() => {
+    window.location.reload();
+  }, 100)
+}
 
 </script>
 
