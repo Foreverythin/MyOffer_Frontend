@@ -35,7 +35,7 @@
                 </el-col>
                 <el-col :span="4">
                   <div class="grid-content ep-bg-purple-light"/>
-                  <el-button size="large" style="width: 100%" :icon="Search">Search</el-button>
+                  <el-button size="large" style="width: 100%" :icon="Search" @click="search">Search</el-button>
                 </el-col>
               </el-row>
               <el-row :gutter="10" justify="center" style="margin-top: 20px;">
@@ -58,10 +58,17 @@
               </el-row>
             </el-card>
             <el-card style="margin-top: 10px;">
-              <el-radio-group v-model="viewMethod" size="large">
-                <el-radio-button label="Hot Posts" @click="router.push('/employee/hot-posts')"/>
-                <el-radio-button label="Latest Posts" @click="router.push('/employee/latest-posts')"/>
-              </el-radio-group>
+              <el-row>
+                <el-col :span="20">
+                  <el-radio-group v-model="viewMethod" size="large">
+                    <el-radio-button label="Hot Posts" @click="router.push('/employee/searched-posts')"/>
+                    <el-radio-button label="Latest Posts" @click="router.push('/employee/searched-posts')"/>
+                  </el-radio-group>
+                </el-col>
+                <el-col :span="4">
+                  <el-button size="large" style="float: right" @click="clearFilter">Clear The Filter</el-button>
+                </el-col>
+              </el-row>
             </el-card>
 
             <!-- show all posts -->
@@ -436,12 +443,12 @@ let ageToShow = ref(18);
 let majorToShow = ref('[Major]');
 let degreeToShow = ref('[Degree]');
 
-const labelIndexSelected: any = reactive([])
+const labelIndexSelected: any = ref([])
 for (let i = 0; i < labelList.length; i++) {
-  labelIndexSelected.push(false)
+  labelIndexSelected.value.push(false)
 }
 
-const salaryValue = ref(3000)
+const salaryValue = ref(2000)
 
 const postSearch = ref('')
 
@@ -467,8 +474,145 @@ const cities = [
   {
     value: 'Chongqing',
     label: 'Chongqing',
+  },
+  {
+    value: 'Guangzhou',
+    label: 'Guangzhou',
+  },
+  {
+    value: 'Shenzhen',
+    label: 'Shenzhen',
+  },
+  {
+    value: 'Hangzhou',
+    label: 'Hangzhou',
+  },
+  {
+    value: 'Nanjing',
+    label: 'Nanjing',
+  },
+  {
+    value: 'Wuhan',
+    label: 'Wuhan',
+  },
+  {
+    value: 'Changsha',
+    label: 'Changsha',
+  },
+  {
+    value: 'Xiamen',
+    label: 'Xiamen',
+  },
+  {
+    value: 'Dalian',
+    label: 'Dalian',
+  },
+  {
+    value: 'Qingdao',
+    label: 'Qingdao',
+  },
+  {
+    value: 'Suzhou',
+    label: 'Suzhou',
+  },
+  {
+    value: 'Tianjin',
+    label: 'Tianjin',
+  },
+  {
+    value: 'Harbin',
+    label: 'Harbin',
+  },
+  {
+    value: 'Shenyang',
+    label: 'Shenyang',
+  },
+  {
+    value: 'Xi\'an',
+    label: 'Xi\'an',
+  },
+  {
+    value: 'Fuzhou',
+    label: 'Fuzhou',
+  },
+  {
+    value: 'Zhengzhou',
+    label: 'Zhengzhou',
+  },
+  {
+    value: 'Kunming',
+    label: 'Kunming',
+  },
+  {
+    value: 'Changchun',
+    label: 'Changchun',
+  },
+  {
+    value: 'Ningbo',
+    label: 'Ningbo',
+  },
+  {
+    value: 'Wuxi',
+    label: 'Wuxi',
+  },
+  {
+    value: 'Shijiazhuang',
+    label: 'Shijiazhuang',
+  },
+  {
+    value: 'Nanchang',
+    label: 'Nanchang',
+  },
+  {
+    value: 'Guiyang',
+    label: 'Guiyang',
+  },
+  {
+    value: 'Nanning',
+    label: 'Nanning',
+  },
+  {
+    value: 'Hefei',
+    label: 'Hefei',
+  },
+  {
+    value: 'Dongguan',
+    label: 'Dongguan',
   }
 ]
+
+let searchFilter = ref({
+  title: postSearch.value,
+  city: citySelected.value,
+  salary: salaryValue.value,
+  labels: labelIndexSelected.value
+});
+
+const search = () => {
+  let tmpLabelList = []
+  for (let i = 0; i < labelList.length; i++) {
+    if (labelIndexSelected.value[i]) {
+      tmpLabelList.push(labelList[i])
+    }
+  }
+  searchFilter.value = {
+    title: postSearch.value,
+    city: citySelected.value,
+    salary: salaryValue.value,
+    labels: tmpLabelList
+  }
+  console.log(searchFilter.value)
+}
+
+const clearFilter = () => {
+  postSearch.value = ''
+  citySelected.value = ''
+  salaryValue.value = 2000
+  for (let i = 0; i < labelList.length; i++) {
+    labelIndexSelected.value[i] = false
+  }
+  search()
+}
 
 const file = ref();
 

@@ -3,8 +3,7 @@ import LoginSignup from '@/components/LoginSignup.vue'
 import TestTest from "@/components/TestTest.vue";
 import EmployeeIndex from "@/components/EmployeeIndex.vue";
 import EmployerIndex from "@/components/EmployerIndex.vue";
-import HotPosts from "@/components/HotPosts.vue";
-import LatestPosts from "@/components/LatestPosts.vue";
+import SearchedPosts from "@/components/SearchedPosts.vue";
 import PostDetail from "@/components/PostDetail.vue";
 import EmployerPassword from "@/components/EmployerPassword.vue";
 import EmployerBasicInfo from "@/components/EmployerBasicInfo.vue";
@@ -28,14 +27,9 @@ const routes = [
         component: EmployeeIndex,
         children: [
             {
-                path: 'hot-posts',
-                name: 'HotPosts',
-                component: HotPosts
-            },
-            {
-                path: 'latest-posts',
-                name: 'LatestPosts',
-                component: LatestPosts
+                path: 'searched-posts',
+                name: 'SearchedPosts',
+                component: SearchedPosts
             }
         ]
     },
