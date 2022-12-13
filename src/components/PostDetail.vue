@@ -8,15 +8,15 @@
         <el-backtop :right="50" :bottom="50" :visibility-height="100" target=".main-content"/>
         <el-card class="post-header-info">
           <el-row style="color: rgb(90, 156, 248); margin-bottom: 25px;">
-            <span style="font-weight: bold">In Recruitment</span>
+            <span style="font-weight: bold">{{ postInfo.inRecruitment === true ? 'In Recruitment' : 'Out Of Recruitment'}}</span>
           </el-row>
           <el-row :gutter="10">
             <el-col :span="15">
-              <span style="font-weight: bold; font-size: x-large;">C++开发工程师</span>
+              <span style="font-weight: bold; font-size: x-large;">{{ postInfo.title }}</span>
               <br/>
-              <el-tag style="margin-right: 5px; margin-top: 15px;">12-14k</el-tag>
-              <el-tag type="success" style="margin-right: 5px;">Bachelor</el-tag>
-              <el-tag type="warning" style="margin-right: 5px;">C++</el-tag>
+              <el-tag style="margin-right: 5px; margin-top: 15px;">¥{{ postInfo.salary }}</el-tag>
+              <el-tag type="success" style="margin-right: 5px;">{{ postInfo.degree }}</el-tag>
+              <el-tag type="warning" style="margin-right: 5px;">{{ postInfo.label }}</el-tag>
               <br/>
               <el-button type="success" style="margin-top: 10px;">Deliver My Resume</el-button>
             </el-col>
@@ -25,12 +25,12 @@
                 <el-icon size="30px" style="position: relative; bottom: 5px;">
                   <OfficeBuilding/>
                 </el-icon>
-                <span style="font-weight: bold; font-size: large; margin-left: 5px;">TM工作室</span>
+                <span style="font-weight: bold; font-size: large; margin-left: 5px;">{{ companyInfo.name }}</span>
               </el-row>
-              <el-tag style="margin-right: 5px; margin-top: 10px;">5 Years</el-tag>
-              <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">500 staff</el-tag>
-              <el-tag type="warning" style="margin-right: 5px; margin-top: 10px;">Game Development</el-tag>
-              <el-tag type="danger" style="margin-top: 10px;">Chengdu</el-tag>
+              <el-tag style="margin-right: 5px; margin-top: 10px;">{{ companyInfo.dateOfEstablishment }}</el-tag>
+              <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">{{ companyInfo.staff }}</el-tag>
+              <el-tag type="warning" style="margin-right: 5px; margin-top: 10px;">{{ companyInfo.researchDirection }}</el-tag>
+              <el-tag type="danger" style="margin-top: 10px;">{{ companyInfo.location }}</el-tag>
             </el-col>
           </el-row>
         </el-card>
@@ -42,21 +42,17 @@
               </el-row>
               <div style="font-size: large">
                 <h3>
-                  岗位职责
+                  Tasks
                 </h3>
-                1. 负责产品的Adaptive AUTOSAR标准模块开发、应用开发、系统调优与算法移植工作；
-                2. 负责维护项目软件的编译环境和脚本；
-                3. 负责视觉智能应用软件在不同嵌入式平台的移植和匹配工作；
-                4. 负责产品软件平台化框架的实现工作；
-                5. 负责解决软件攻关性问题；
+                <div style="line-height: 30px;">
+                  {{ postInfo.tasks }}
+                </div>
                 <h3>
-                  任职要求
+                  Requirements
                 </h3>
-                1. 全日制本科及以上学历
-                2. 2年以上相关嵌入式软件开发及测试工作经验；
-                3. 熟练掌握C++语言开发，
-                4. 熟练掌握数据结构、C++设计模式、STL，具备多线程编程、进程间通讯、系统内存优化等能力；
-                5. 熟练掌握gdb调试，能够基于Linux、Shell、RTOS等环境开展软件开发工作；
+                <div style="line-height: 30px;">
+                  {{ postInfo.requirements }}
+                </div>
               </div>
             </el-card>
             <el-card style="margin-top: 10px;">
@@ -75,7 +71,7 @@
                       Name
                     </div>
                   </template>
-                  TM工作室
+                  {{ companyInfo.name }}
                 </el-descriptions-item>
                 <el-descriptions-item>
                   <template #label>
@@ -83,7 +79,7 @@
                       CEO
                     </div>
                   </template>
-                  Pangyu
+                  {{ companyInfo.CEO }}
                 </el-descriptions-item>
                 <el-descriptions-item>
                   <template #label>
@@ -91,7 +87,7 @@
                       Research Direction
                     </div>
                   </template>
-                  AI
+                  {{ companyInfo.researchDirection }}
                 </el-descriptions-item>
                 <el-descriptions-item>
                   <template #label>
@@ -99,7 +95,7 @@
                       Date of Establishment
                     </div>
                   </template>
-                  2018-10-03
+                  {{ companyInfo.dateOfEstablishment }}
                 </el-descriptions-item>
                 <el-descriptions-item>
                   <template #label>
@@ -107,7 +103,7 @@
                       Location
                     </div>
                   </template>
-                  Chengdu
+                  {{ companyInfo.location }}
                 </el-descriptions-item>
                 <el-descriptions-item>
                   <template #label>
@@ -115,7 +111,7 @@
                       Staff
                     </div>
                   </template>
-                  300
+                  {{ companyInfo.staff }}
                 </el-descriptions-item>
                 <el-descriptions-item>
                   <template #label>
@@ -123,14 +119,12 @@
                       Email
                     </div>
                   </template>
-                  1510397456@qq.com
+                  {{ companyInfo.email }}
                 </el-descriptions-item>
               </el-descriptions>
               <h3>Introduction</h3>
-              <div style="font-size: large; line-height: 25px;">
-                南京红松信息成立于2014年4月，注册资金2000万，坐落于雨花台区宁双路18号沁恒科技园D栋一楼，公司以“用数据驱动行业进步”为使命，致力于大数据、人工智能、物联网技术研究和应用。自成立以来公司研发的“翌学”AI自动批阅系统、松果大数据分析系统、“e企学”在线学习平台，等产品在国内有着广泛的应用。作为一家创新型高新技术企业，公司研发技术人员占比超过70%，凭着多个领域的深入研究和积累，已累积申请发明专利20项，软件著作权28项。公司充分利用高校丰富的智力资源，和南京大学共建“研究生工作站”，和厦门集美大学、南京邮电大学等开展了深入的产学研合作。同时公司也是Prometric/VUE在国内的授权考试中心。
-
-                红松，成就卓越自我！
+              <div style="font-size: large; line-height: 30px;">
+                {{ companyInfo.introduction }}
               </div>
             </el-card>
           </el-col>
@@ -158,19 +152,58 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, reactive, toRefs} from 'vue'
+import {ref, reactive, toRefs, watchEffect} from 'vue'
 import axios from "axios";
 import router from "@/router";
 import {OfficeBuilding, Back} from '@element-plus/icons-vue'
 import EmployeeNav from "@/components/EmployeeNav.vue";
+import {ElMessage} from "element-plus";
 
 let screenWidth = ref(window.innerWidth);
 
 let similarPosts = ref([1, 2, 3, 4, 5]);
 
+let postID = ref(1);
+let postInfo = ref({
+  title: '',
+  salary: 2000,
+  degree: '',
+  label: '',
+  tasks: '',
+  requirements: '',
+  inRecruitment: true
+});
+let companyInfo = ref({
+  name: '',
+  dateOfEstablishment: '',
+  staff: 0,
+  researchDirection: '',
+  location: '',
+  email: '',
+  CEO: '',
+  introduction: ''
+})
+
 window.addEventListener('resize', () => {
   screenWidth.value = window.innerWidth;
 });
+
+postID.value = Number(router.currentRoute.value.query.postID!);
+axios({
+  url: '/api/employee/post-info',
+  method: 'get',
+  params: {
+    postID: postID.value
+  }
+}).then(res => {
+  postInfo.value = res.data.data.postInfo;
+  companyInfo.value = res.data.data.companyInfo;
+  console.log(2)
+  console.log(postInfo.value);
+  console.log(companyInfo.value);
+}).catch(err => {
+  ElMessage.error(err);
+})
 
 </script>
 

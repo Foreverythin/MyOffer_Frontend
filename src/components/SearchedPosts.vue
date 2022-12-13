@@ -7,7 +7,7 @@
       No results!
     </a-empty>
   </el-card>
-  <el-card style="margin-top: 10px;" v-for="item in postList" class="postCard" data-postID="2" @click="toPostDetail(2)">
+  <el-card style="margin-top: 10px;" v-for="item in postList" class="postCard" data-postID="2" @click="toPostDetail(item.post_id)">
     <el-row :gutter="10">
       <el-col :span="15">
         <span style="font-weight: bold; font-size: large;">{{ item.title }}</span>
@@ -93,7 +93,12 @@ watchEffect(() => {
 const postList = ref([]);
 
 const toPostDetail = (postID: number) => {
-  router.push('/post');
+  router.push({
+    path: '/post',
+    query: {
+      postID: postID
+    }
+  })
 }
 
 </script>
