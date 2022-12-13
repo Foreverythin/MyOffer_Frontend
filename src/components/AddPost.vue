@@ -93,10 +93,10 @@ const submit = () => {
   }).then(res => {
     if (res.data.status === 200) {
       ElMessage.success(res.data.msg)
-      formRef.value?.resetFields()
     } else {
       ElMessage.error(res.data.msg)
     }
+    formRef.value?.resetFields()
   }).catch(err => {
     ElMessage.error(err)
   })

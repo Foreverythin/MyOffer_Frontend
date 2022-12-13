@@ -496,8 +496,11 @@ function SigninSubmit(formEl: FormInstance | undefined, userType: string) {
                 router.push({
                   path: '/employee/searched-posts',
                   query: {
-                    page: 1,
-                    pageSize: 10,
+                    title: '',
+                    city: '',
+                    salary: 2000,
+                    labels: [],
+                    viewMethod: 'Hot Posts'
                   }
                 });
               } else {

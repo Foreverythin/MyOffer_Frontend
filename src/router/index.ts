@@ -83,7 +83,16 @@ router.beforeEach((to, from, next) => {
         } else {
             if (to.path === '/') {
                 if (token.slice(0, 8) == 'employee') {
-                    next('/' + token.slice(0, 8) + '/hot-posts');
+                    router.push({
+                        path: '/' + token.slice(0, 8) + '/searched-posts',
+                        query: {
+                            title: '',
+                            city: '',
+                            salary: 2000,
+                            labels: [],
+                            viewMethod: 'Hot Posts'
+                        }
+                    })
                 } else {
                     next('/' + token.slice(0, 8) + '/basic-info');
                 }

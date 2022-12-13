@@ -61,8 +61,8 @@
               <el-row>
                 <el-col :span="20">
                   <el-radio-group v-model="viewMethod" size="large">
-                    <el-radio-button label="Hot Posts" @click="router.push('/employee/searched-posts')"/>
-                    <el-radio-button label="Latest Posts" @click="router.push('/employee/searched-posts')"/>
+                    <el-radio-button label="Hot Posts" @click="searchPosts('Hot Posts')"/>
+                    <el-radio-button label="High Salary Posts" @click="searchPosts('High Salary Posts')"/>
                   </el-radio-group>
                 </el-col>
                 <el-col :span="4">
@@ -456,10 +456,6 @@ const citySelected = ref('')
 
 const cities = [
   {
-    value: 'All Cities',
-    label: 'All Cities',
-  },
-  {
     value: 'Beijing',
     label: 'Beijing',
   },
@@ -585,7 +581,8 @@ let searchFilter = ref({
   title: postSearch.value,
   city: citySelected.value,
   salary: salaryValue.value,
-  labels: labelIndexSelected.value
+  labels: labelIndexSelected.value,
+  viewMethod: viewMethod.value
 });
 
 const search = () => {
@@ -599,9 +596,10 @@ const search = () => {
     title: postSearch.value,
     city: citySelected.value,
     salary: salaryValue.value,
-    labels: tmpLabelList
+    labels: tmpLabelList,
+    viewMethod: viewMethod.value
   }
-  console.log(searchFilter.value)
+  router.push({path: '/employee/searched-posts', query: searchFilter.value})
 }
 
 const clearFilter = () => {
@@ -612,6 +610,11 @@ const clearFilter = () => {
     labelIndexSelected.value[i] = false
   }
   search()
+}
+
+const searchPosts = (view: string) => {
+  viewMethod.value = view
+  search();
 }
 
 const file = ref();
@@ -838,6 +841,20 @@ const downloadResumeFile = () => {
     document.body.removeChild(link);
   };
   xhr.send();
+}
+
+// when the page is refreshed
+window.onload = function () {
+  router.replace({
+    path: '/employee/searched-posts',
+    query: {
+      title: '',
+      city: '',
+      salary: 2000,
+      labels: [],
+      viewMethod: 'Hot Posts'
+    }
+  });
 }
 
 </script>

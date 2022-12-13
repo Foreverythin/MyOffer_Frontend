@@ -37,6 +37,9 @@
             <a-descriptions-item label="Status">
               <a-tag>{{ key.inRecruitment }}</a-tag>
             </a-descriptions-item>
+            <a-descriptions-item label="Received Resumes">
+              <a-tag>{{ key.receivedResumes }}</a-tag>
+            </a-descriptions-item>
           </a-descriptions>
         </a-space>
       </div>
@@ -127,7 +130,7 @@ const form = reactive({
   label: '',
   tasks: '',
   requirements: '',
-  inRecruitment: 'true'
+  inRecruitment: 'true',
 })
 
 let currentPostID = ref(0);
@@ -141,7 +144,7 @@ function getPostList() {
     postList.value = res.data.data;
     console.log(postList.value);
   }).catch(err => {
-    console.log(err);
+    ElMessage.error(err);
   })
 }
 
