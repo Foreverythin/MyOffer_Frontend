@@ -24,7 +24,7 @@
           <span style="font-weight: bold; font-size: large; margin-left: 5px;">{{ item.employer_name }}</span>
         </el-row>
         <el-tag style="margin-right: 5px; margin-top: 10px;">{{ item.employer_dateOfEstablishment }}</el-tag>
-        <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">{{ item.employer_staff }} staffs</el-tag>
+        <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">{{ item.employer_staff }} Staffs</el-tag>
         <el-tag type="warning" style="margin-right: 5px; margin-top: 10px;">{{ item.employer_researchDirection }}</el-tag>
         <el-tag type="danger" style="margin-top: 10px;">{{ item.employer_location }}</el-tag>
       </el-col>
@@ -90,7 +90,18 @@ watchEffect(() => {
   getPostList();
 })
 
-const postList = ref([]);
+const postList = ref([{
+  post_id: 1,
+  title: 'Post Title',
+  salary: 2000,
+  degree: '',
+  label: '',
+  employer_name: '',
+  employer_dateOfEstablishment: '',
+  employer_staff: 0,
+  employer_researchDirection: '',
+  employer_location: ''
+}]);
 
 const toPostDetail = (postID: number) => {
   router.push({

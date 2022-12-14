@@ -15,29 +15,29 @@
       <div>
         <a-space direction="vertical" size="large" fill>
           <a-descriptions size="large" style="margin-top: 5px;">
-            <a-descriptions-item label="Salary">
+            <a-descriptions-item label="Salary" :span="24">
               <a-tag>{{ key.salary }}</a-tag>
             </a-descriptions-item>
-            <a-descriptions-item label="Degree">
+            <a-descriptions-item label="Degree" :span="24">
               <a-tag>{{ key.degree }}</a-tag>
             </a-descriptions-item>
-            <a-descriptions-item label="Label">
+            <a-descriptions-item label="Label" :span="24">
               <a-tag>{{ key.label }}</a-tag>
             </a-descriptions-item>
             <a-descriptions-item label="Tasks" :span="24">
-              <a-card style="width: 700px;">
+              <a-card style="width: 800px;">
                 {{ key.tasks }}
               </a-card>
             </a-descriptions-item>
             <a-descriptions-item label="Requirements" :span="24" style="border-radius: 6px;">
-              <a-card style="width: 700px;">
+              <a-card style="width: 800px;">
                 {{ key.requirements }}
               </a-card>
             </a-descriptions-item>
-            <a-descriptions-item label="Status">
+            <a-descriptions-item label="Status" :span="24">
               <a-tag>{{ key.inRecruitment }}</a-tag>
             </a-descriptions-item>
-            <a-descriptions-item label="Received Resumes">
+            <a-descriptions-item label="Received Resumes" :span="24">
               <a-tag>{{ key.receivedResumes }}</a-tag>
             </a-descriptions-item>
           </a-descriptions>
@@ -103,9 +103,6 @@
             <a-option>false</a-option>
           </a-select>
         </a-form-item>
-        <a-form-item>
-          <a-button type="primary" @click="submit">Submit</a-button>
-        </a-form-item>
       </a-form>
     </a-space>
   </a-modal>
@@ -113,19 +110,29 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, toRefs } from 'vue'
+import { ref, reactive } from 'vue'
 import axios from "axios";
 import {ElMessage, FormInstance} from "element-plus";
 
 let editPostDialogVisible = ref(false)
 
-let postList = ref([]);
+let postList = ref([{
+  ID: 1,
+  title: '',
+  salary: 2000,
+  degree: '',
+  label: '',
+  tasks: '',
+  requirements: '',
+  inRecruitment: 'true',
+  receivedResumes: 0
+}]);
 
 const formRef = ref<FormInstance>();
 
 const form = reactive({
   title: '',
-  salary: 3000,
+  salary: 2000,
   degree: '',
   label: '',
   tasks: '',

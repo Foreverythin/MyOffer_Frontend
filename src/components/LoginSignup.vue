@@ -300,7 +300,7 @@
               <el-input placeholder="" show-password v-model="employeeSignupForm.confirmPassword"></el-input>
             </el-form-item>
           </el-form>
-          <el-button type="primary" size="large" style="width: 100%;" @click="SignupSubmit(employeeSignupFormRef)">Submit</el-button>
+          <el-button type="primary" size="large" style="width: 100%;" @click="SignupSubmit(employeeSignupFormRef, 'employee')">Submit</el-button>
           <br>
           <el-button size="large" style="width: 100%; margin-top: 10px;" @click="reset(employeeSignupFormRef)">Reset</el-button>
           <span class="switch-to-login-signup" @click="switchEmployee">Already have an account? Sign in. -></span>

@@ -28,7 +28,7 @@
                 <span style="font-weight: bold; font-size: large; margin-left: 5px;">{{ companyInfo.name }}</span>
               </el-row>
               <el-tag style="margin-right: 5px; margin-top: 10px;">{{ companyInfo.dateOfEstablishment }}</el-tag>
-              <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">{{ companyInfo.staff }}</el-tag>
+              <el-tag type="success" style="margin-right: 5px; margin-top: 10px;">{{ companyInfo.staff }} Staffs</el-tag>
               <el-tag type="warning" style="margin-right: 5px; margin-top: 10px;">{{ companyInfo.researchDirection }}</el-tag>
               <el-tag type="danger" style="margin-top: 10px;">{{ companyInfo.location }}</el-tag>
             </el-col>
@@ -170,7 +170,13 @@ import {ElMessage} from "element-plus";
 
 let screenWidth = ref(window.innerWidth);
 
-let similarPosts = ref([1, 2, 3, 4, 5]);
+let similarPosts = ref([{
+  post_id: 0,
+  title: "",
+  salary: 0,
+  degree: "",
+  label: ""
+}]);
 
 let postID = ref(1);
 let postInfo = ref({
