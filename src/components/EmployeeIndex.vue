@@ -795,12 +795,12 @@ const handleResumeExceed: UploadProps['onExceed'] = (files) => {
 }
 
 const handleResumeSuccess = ((res: any) => {
-  ElMessage.success('Upload successfully');
   axios({
     url: '/api/employee/resume',
     method: 'get'
   }).then((res) => {
     console.log(res.data.data.resume);
+    ElMessage.success('Upload successfully');
     resumeRef.value!.clearFiles();
     resumeFileName.value = res.data.data.resume;
   }).catch((err) => {
