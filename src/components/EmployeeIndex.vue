@@ -130,31 +130,31 @@
 
             <!-- ads -->
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
             <el-card style="background-color: #e2e9f1; margin-top: 15px;">
-              hhh
+              Ads
             </el-card>
 
           </el-col>
